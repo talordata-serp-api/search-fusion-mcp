@@ -22,7 +22,7 @@ from src.engines import (
     ExaSearch,
     JinaSearch
 )
-
+from src.engines.talordata_search import TalorDataSearch
 
 class SearchManager:
     """Search manager responsible for managing multiple search engines with priority-based polling"""
@@ -69,7 +69,14 @@ class SearchManager:
                 logger.info("✓ Serper search engine initialized successfully")
             except Exception as e:
                 logger.error(f"✗ Serper search engine initialization failed: {e}")
-        
+                # # 2.5 TalorData search engine (same priority as Google/Serper)
+        if self.config_manager.is_engine_enabled('talordata'):
+            talordata_config = self.config_manager.get_engine_config('talordata')
+            try:
+                self.engines.append(TalorDataSearch(api_key=talordata_config.api_key))
+                logger.info("✓ TalorData search engine initialized successfully")
+            except Exception as e:
+                logger.error(f"X TalorData search engine initialization failed: {e}")
         # 3. Jina AI search engine (second priority)
         if self.config_manager.is_engine_enabled('jina'):
             jina_config = self.config_manager.get_engine_config('jina')
