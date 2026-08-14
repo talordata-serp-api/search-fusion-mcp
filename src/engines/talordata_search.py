@@ -16,14 +16,16 @@ class TalorDataSearch(SearchEngine):
         if not self.api_key:
             return []
             
-        url = "https://talordata.com"
+        url = "https://api.talordata.com/accounts/v1/serp/get_serp_data"
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
         }
         payload = {
             "q": query,
-            "engine": "google"
+            "engine": "google",
+            "num": num_results,
+            "json": "1"  # 返回结构化 JSON
         }
         
         async with httpx.AsyncClient() as client:
