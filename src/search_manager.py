@@ -12,7 +12,7 @@ from datetime import datetime
 
 from src.config.config_manager import ConfigManager
 from src.engines import (
-    SearchEngine, 
+    SearchEngine,
     SearchResult,
     GoogleSearch,
     SerperSearch,
@@ -20,9 +20,9 @@ from src.engines import (
     BingSearch,
     BaiduSearch,
     ExaSearch,
-    JinaSearch
+    JinaSearch,
+    TalorDataSearch,
 )
-from src.engines.talordata_search import TalorDataSearch
 
 class SearchManager:
     """Search manager responsible for managing multiple search engines with priority-based polling"""
@@ -69,14 +69,7 @@ class SearchManager:
                 logger.info("✓ Serper search engine initialized successfully")
             except Exception as e:
                 logger.error(f"✗ Serper search engine initialization failed: {e}")
-                # # 2.5 TalorData search engine (same priority as Google/Serper)
-        if self.config_manager.is_engine_enabled('talordata'):
-            talordata_config = self.config_manager.get_engine_config('talordata')
-            try:
-                self.engines.append(TalorDataSearch(api_key=talordata_config.api_key))
-                logger.info("✓ TalorData search engine initialized successfully")
-            except Exception as e:
-                logger.error(f"X TalorData search engine initialization failed: {e}")
+        
         # 3. Jina AI search engine (second priority)
         if self.config_manager.is_engine_enabled('jina'):
             jina_config = self.config_manager.get_engine_config('jina')
@@ -124,14 +117,30 @@ class SearchManager:
                 except Exception as e:
                     logger.error(f"✗ Baidu search engine initialization failed: {e}")
             else:
-                logger.warning("⚠ Baidu search configuration incomplete (missing SECRET_KEY), skipping initialization")
-    
+                logger.warning("⚠️ Baidu search configuration incomplete (missing SECRET_KEY), skipping initialization")
+
+        # 8. TalorData search engine
+        if self.config_manager.is_engine_enabled('talordata'):
+            talor_config = self.config_manager.get_engine_config('talordata')
+            if talor_config.api_key:
+                try:
+                    self.engines.append(TalorDataSearch(
+                        api_key=talor_config.api_key
+                    ))
+                    logger.info("✅ TalorData search engine initialized successfully")
+                except Exception as e:
+                    logger.error(f"❌ TalorData search engine initialization failed: {e}")
+            else:
+                logger.warning("⚠️ TalorData API key not found, engine disabled")
+        else:
+            logger.debug("ℹ️ TalorData engine disabled in configuration")
+
     def _log_engine_summary(self):
         """Log search engine summary"""
         if not self.engines:
             logger.warning("⚠️ No search engines available")
             return
-        
+
         engine_info = []
         for engine in self.engines:
             status = "✓" if engine.is_available() else "✗"
