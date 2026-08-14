@@ -1,5 +1,4 @@
 """Search engines module."""
-
 from src.engines.base import SearchEngine, SearchResult
 from src.engines.google_search import GoogleSearch
 from src.engines.serper_search import SerperSearch
@@ -8,15 +7,17 @@ from src.engines.bing_search import BingSearch
 from src.engines.baidu_search import BaiduSearch
 from src.engines.exa_search import ExaSearch
 from src.engines.jina_search import JinaSearch
+from src.engines.talordata_search import TalordataSearch  # ← 新增
 
 __all__ = [
-    "SearchEngine", 
+    "SearchEngine",
     "SearchResult",
     "GoogleSearch",
-    "SerperSearch", 
+    "SerperSearch",
     "DuckDuckGoSearch",
     "BingSearch",
     "BaiduSearch",
     "ExaSearch",
-    "JinaSearch"
+    "JinaSearch",
+    "TalordataSearch",  # ← 新增
 ]
