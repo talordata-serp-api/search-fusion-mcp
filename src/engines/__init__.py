@@ -7,7 +7,7 @@ from src.engines.bing_search import BingSearch
 from src.engines.baidu_search import BaiduSearch
 from src.engines.exa_search import ExaSearch
 from src.engines.jina_search import JinaSearch
-from src.engines.talordata_search import TalordataSearch  # ← 新增
+from src.engines.talordata_search import TalorDataSearch  # ← 改成 TalorDataSearch
 
 __all__ = [
     "SearchEngine",
@@ -19,5 +19,5 @@ __all__ = [
     "BaiduSearch",
     "ExaSearch",
     "JinaSearch",
-    "TalordataSearch",  # ← 新增
+    "TalorDataSearch",  # ← 改成 TalorDataSearch
 ]
