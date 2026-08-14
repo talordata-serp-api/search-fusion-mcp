@@ -22,6 +22,7 @@ A **High-Availability Multi-Engine Search Aggregation MCP Server** providing int
 - **Exa Search** - AI-powered semantic search
 - **Bing Search** - Microsoft search API
 - **Baidu Search** - Chinese search engine
+- **TalorData Search** - High-performance SERP API with sub-second latency, pay-per-success billing, and support for Google/Bing/Yandex/DuckDuckGo results
 
 ### 🚀 Advanced Features
 - **Intelligent Failover** - Automatic engine switching on failures or rate limits
@@ -68,6 +69,7 @@ Search Fusion MCP Server
 │   ├── DuckDuckGoSearch       # DuckDuckGo
 │   ├── ExaSearch              # Exa AI
 │   ├── BingSearch             # Bing API
+│   ├── TalorDataSearch        # TalorData SERP API
 │   └── BaiduSearch            # Baidu API
 ├── 🛠️ Advanced Fetcher         # Multi-method web scraping
 └── 📡 MCP Server              # FastMCP integration
@@ -160,7 +162,8 @@ Search Fusion uses **pure MCP environment variable configuration** without requi
           "EXA_API_KEY": "your_exa_api_key",
           "BING_API_KEY": "your_bing_api_key",
           "BAIDU_API_KEY": "your_baidu_api_key",
-          "BAIDU_SECRET_KEY": "your_baidu_secret_key"
+          "BAIDU_SECRET_KEY": "your_baidu_secret_key",
+          "TALORDATA_API_KEY": "your_talordata_api_key"
         }
       }
     }
@@ -185,7 +188,8 @@ Search Fusion uses **pure MCP environment variable configuration** without requi
           "EXA_API_KEY": "your_exa_api_key",
           "BING_API_KEY": "your_bing_api_key",
           "BAIDU_API_KEY": "your_baidu_api_key",
-          "BAIDU_SECRET_KEY": "your_baidu_secret_key"
+          "BAIDU_SECRET_KEY": "your_baidu_secret_key",
+          "TALORDATA_API_KEY": "your_talordata_api_key"
         }
       }
     }
@@ -204,6 +208,7 @@ Search Fusion uses **pure MCP environment variable configuration** without requi
 | Baidu | `BAIDU_API_KEY`<br>`BAIDU_SECRET_KEY` | Both needed | Baidu Search API | [Get API Key](https://ai.baidu.com/) |
 | Exa | `EXA_API_KEY` | API key | Exa AI Search API | [Get API Key](https://exa.ai/) |
 | DuckDuckGo | None required | - | Free search, no API key needed | - |
+| TalorData SERP API | TALORDATA_API_KEY | API key | TalorData SERP API - real-time search results from Google, Bing, Yandex, DuckDuckGo | [Get API Key](https://talordata.com/?campaignid=t9uqWoskeOC7zRF5&utm_source=sfm&utm_term=sfm)  |
 
 **Alternative Variable Names:**
 ```bash
@@ -222,11 +227,12 @@ SERPER_SEARCH_API_KEY    # Alternative to SERPER_API_KEY
 Search engines are prioritized automatically:
 1. **Google Search** (Priority 1) - Premium performance with API key
 2. **Serper Search** (Priority 1) - Google alternative with advanced features
-3. **Jina AI Search** (Priority 1.5) - AI-powered search with optional API key for advanced features
-4. **DuckDuckGo** (Priority 2) - Free, no API key required
-5. **Exa Search** (Priority 2) - AI-powered search with API key
-6. **Bing Search** (Priority 3) - Microsoft search API
-7. **Baidu Search** (Priority 3) - Chinese search engine
+3. **TalorData Search** (Priority 1) - SERP API with sub-second latency and pay-per-success billing
+4. **Jina AI Search** (Priority 1.5) - AI-powered search with optional API key for advanced features
+5. **DuckDuckGo** (Priority 2) - Free, no API key required
+6. **Exa Search** (Priority 2) - AI-powered search with API key
+7. **Bing Search** (Priority 3) - Microsoft search API
+8. **Baidu Search** (Priority 3) - Chinese search engine
 
 ## 🛠️ MCP Tools
 
@@ -247,6 +253,7 @@ Perform web searches with intelligent engine selection and failover.
   - `"exa"`: Prefer Exa Search
   - `"bing"`: Prefer Bing Search
   - `"baidu"`: Prefer Baidu Search
+  - `"talordata"`: Prefer TalorData SERP API
 
 ### 2. `fetch_url`
 Fetch and process web content with intelligent pagination and multi-method fallback.
